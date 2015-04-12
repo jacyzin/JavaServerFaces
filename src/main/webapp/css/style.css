@@ -1,0 +1,34 @@
+body {
+	font-family: Verdana, Geneva, sans-serif;
+	font-style: normal;
+	font-variant: normal;
+}
+
+.box {
+	background-color: #DCDCDC;
+	border-radius: 10px;
+	padding: 20px;
+	font-size: 12px;
+	margin: 10px;
+	float: left;
+}
+
+.box .tipo {
+	width: 200px;
+	height: 70px;
+	
+}
+
+.box .produtos {
+	width: 200px;
+	height: 390px;
+	
+} 
+
+.buttons .itens {
+	margin: 5px;
+	padding: 5px 5px 5px 20px;
+	border: 1px solid #aaa;
+	font-size: 14px;
+	margin: auto;
+}
