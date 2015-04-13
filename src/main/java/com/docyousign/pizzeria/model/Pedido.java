@@ -17,14 +17,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "pedidos")
 public class Pedido {
-	
+
 	@Id
 	@Column(name = "id_pedido")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer idPedido;
-	
+
 	@OneToMany(targetEntity = ItensPedido.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="id_itens_pedido")
+	@JoinColumn(name = "id_itens_pedido")
 	private List<ItensPedido> itensPedido = new LinkedList<ItensPedido>();
 
 	public Integer getIdPedido() {
@@ -42,5 +42,5 @@ public class Pedido {
 	public void setItensPedido(List<ItensPedido> itensPedido) {
 		this.itensPedido = itensPedido;
 	}
-	
+
 }

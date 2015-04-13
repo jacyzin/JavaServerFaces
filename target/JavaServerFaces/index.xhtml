@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:body>
+
+	<h1>Pizzeria</h1>
+
+	<div style="width: 1200; height: 600px;">
+
+		<h:form>
+
+			<div style="width: 300px; height: 600px; float: left;">
+				<h:commandLink action="#{pedidoBean.setTipoProduto(1)}"
+					value="PIZZA">
+				</h:commandLink>
+				<br />
+				<h:commandLink action="#{pedidoBean.setTipoProduto(2)}"
+					value="BEBIDA">
+				</h:commandLink>
+				<br />
+				<h:commandLink action="#{pedidoBean.setTipoProduto(3)}"
+					value="SOBREMESA">
+				</h:commandLink>
+			</div>
+
+			<div style="width: 300px; height: 600px; float: left;">
+				<h:selectOneListbox value="#{pedidoBean.idProduto}"
+					style="width: 200px; height: 200px;">
+
+					<f:selectItems value="#{pedidoBean.getProdutos()}" var="produto"
+						itemValue="#{produto.idProduto}"
+						itemLabel="#{produto.descricaoProduto} - #{produto.valorProduto}">
+					</f:selectItems>
+
+				</h:selectOneListbox>
+				<h:commandButton value="Adicionar Produto"
+					action="#{pedidoBean.addProduto()}" />
+			</div>
+
+			<h:panelGroup style="width: 300px; height: 600px; float:left;"
+				rendered="#{pedidoBean.tipoProduto == 1}">
+
+				<b>monte sua pizza</b>
+				<ui:repeat value="#{pedidoBean.pizza}" var="produto">
+					<li>#{produto.descricaoProduto}</li>
+				</ui:repeat>
+
+			</h:panelGroup>
+
+			<div style="width: 300px; height: 600px; float: left;">
+
+				<b>confira seu pedido</b>
+
+				<ul>
+					<ui:repeat value="#{pedidoBean.pedidoList}" var="itensPedido">
+						<li><ui:repeat value="#{itensPedido.subItensPedido}"
+								var="subItensPedido">  
+            					#{subItensPedido.produto.descricaoProduto}  
+        					</ui:repeat> <br /> #{itensPedido.valorItem}</li>
+					</ui:repeat>
+				</ul>
+
+				<div style="float: left;">Valor total: #{pedidoBean.getTotalPedido()}</div>
+				<h:commandButton value="Fechar Pedido"
+					action="#{pedidoBean.finalizarPedido()}" />
+
+			</div>
+
+		</h:form>
+	</div>
+</h:body>
+
+</html>

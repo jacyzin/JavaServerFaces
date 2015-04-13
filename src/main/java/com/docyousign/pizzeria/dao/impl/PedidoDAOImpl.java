@@ -11,7 +11,6 @@ import com.docyousign.pizzeria.dao.HibernateUtil;
 import com.docyousign.pizzeria.dao.PedidoDAO;
 import com.docyousign.pizzeria.model.ItensPedido;
 import com.docyousign.pizzeria.model.Pedido;
-import com.docyousign.pizzeria.model.Produto;
 import com.docyousign.pizzeria.model.SubItensPedido;
 
 public class PedidoDAOImpl implements PedidoDAO {
@@ -25,19 +24,44 @@ public class PedidoDAOImpl implements PedidoDAO {
 	}
 
 	@Override
-	public void salvarPedido(Produto produto, Pedido pedido, ItensPedido itensPedido, SubItensPedido subItensPedido) {
+	public void salvarPedido(Pedido pedido) {
 		try {
-			// Inicia uma transação com o banco de dados.
-			Transaction tx = this.session.beginTransaction();
-			itensPedido.setPedido(pedido);
-			subItensPedido.setItensPedido(itensPedido);
-			subItensPedido.setProduto(produto);
-			//this.session.save(produto);
-			this.session.save(pedido);
-			this.session.save(itensPedido);
-			this.session.save(subItensPedido);
+			Transaction tx = session.beginTransaction();
+
+			Pedido newPedido = new Pedido();
+
+			// salva o pedido
+			Integer id = (Integer) session.save(newPedido);
+			pedido.setIdPedido(id);
+
+			List<ItensPedido> itensPedidoList = pedido.getItensPedido();
+
+			for (ItensPedido item : itensPedidoList) {
+
+				ItensPedido newItem = new ItensPedido();
+				newItem.setPedido(pedido);
+				newItem.setValorItem(item.getValorItem());
+
+				Integer itemId = (Integer) session.save(newItem);
+				item.setIdItensPedido(itemId);
+
+				List<SubItensPedido> subItensPedidoList = item
+						.getSubItensPedido();
+
+				for (SubItensPedido subItem : subItensPedidoList) {
+
+					subItem.setItensPedido(item);
+					session.save(subItem);
+				}
+
+			}
+
 			tx.commit();
-			System.out.println("salvo com sucesso");
+			System.out
+					.println("Pedido salvo com seus respectivos itens + subitens");
+		} catch (Throwable t) {
+			this.session.getTransaction().rollback();
+			t.printStackTrace();
 		} finally {
 			this.session.close();
 		}

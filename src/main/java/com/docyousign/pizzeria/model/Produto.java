@@ -18,27 +18,27 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "produtos")
 public class Produto {
-	
+
 	@Id
 	@Column(name = "id_produto")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer idProduto;
-	
+
 	@Column(name = "tipo_produto")
 	private Integer tipoProduto;
-	
+
 	@Column(name = "descricao_produto")
 	private String descricaoProduto;
-	
+
 	@Column(name = "valor_produto")
 	private BigDecimal valorProduto;
 
 	public Integer getIdProduto() {
 		return idProduto;
 	}
-	
+
 	@OneToMany(targetEntity = SubItensPedido.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="id_produto")
+	@JoinColumn(name = "id_produto")
 	private List<SubItensPedido> subItensPedido = new LinkedList<SubItensPedido>();
 
 	public void setIdProduto(Integer idProduto) {
